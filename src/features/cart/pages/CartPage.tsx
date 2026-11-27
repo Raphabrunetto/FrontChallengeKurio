@@ -6,6 +6,8 @@ import { Trash2 } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 
 import { useCart } from '../hooks/useCart'
+import { useNFTs } from '../../catalog/hooks/useNFTs'
+import { RecommendationCarousel } from '../../catalog/components/RecommendationCarousel'
 
 import { CartHeader } from '../components/CartHeader'
 import { CartItemCard } from '../components/CartItemCard'
@@ -54,6 +56,11 @@ export function CartPage() {
   const [couponMessage, setCouponMessage] = useState('')
 
   const items = cart?.items ?? []
+  const { data: catalog } = useNFTs({ limit: 50, sort: 'newest' })
+  const cartNFTIds = new Set(items.map((item) => item.nft.id))
+  const recommendedNFTs = (catalog?.items ?? []).filter(
+    (nft) => !cartNFTIds.has(nft.id),
+  )
 
   const subtotal = items.reduce((sum, item) => {
     return sum.plus(
@@ -217,6 +224,7 @@ export function CartPage() {
         {items.length === 0 ? (
           <EmptyCart />
         ) : (
+          <>
           <div className="grid min-w-0 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px]">
             <section className="min-w-0 space-y-4">
               {cartError && (
@@ -282,6 +290,11 @@ export function CartPage() {
               </p>
             </aside>
           </div>
+          <RecommendationCarousel
+            title="Colecionadores também viram"
+            nfts={recommendedNFTs}
+          />
+          </>
         )}
       </div>
     </div>

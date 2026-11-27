@@ -36,6 +36,27 @@ test('rotas principais não criam rolagem horizontal em telas mobile', async ({ 
       await page.goto(route)
       await expect(page.locator('body')).not.toBeEmpty()
 
+      if (route === '/nft/nft-001') {
+        await expect(
+          page.getByRole('region', { name: 'Mais desta coleção' }),
+        ).toBeVisible()
+      }
+
+      if (route === '/') {
+        const categoryRow = page.getByRole('group', { name: 'Categorias de NFTs' })
+        const lastCategory = await categoryRow.getByRole('button', { name: 'Em alta' }).boundingBox()
+        const rowBounds = await categoryRow.boundingBox()
+        expect(lastCategory).not.toBeNull()
+        expect(rowBounds).not.toBeNull()
+        expect(lastCategory!.x + lastCategory!.width).toBeLessThanOrEqual(rowBounds!.x + rowBounds!.width + 1)
+      }
+
+      if (route === '/cart') {
+        await expect(
+          page.getByRole('region', { name: 'Colecionadores também viram' }),
+        ).toBeVisible()
+      }
+
       const dimensions = await page.evaluate(() => ({
         viewport: document.documentElement.clientWidth,
         content: document.documentElement.scrollWidth,

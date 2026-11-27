@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from '@tanstack/react-router'
 import { ArrowLeft, ShoppingCart } from 'lucide-react'
 import { nftService } from '../services/nft.service'
+import { useNFTs } from '../hooks/useNFTs'
+import { RecommendationCarousel } from '../components/RecommendationCarousel'
 import { useCart } from '../../cart/hooks/useCart'
 
 export function NFTDetailsPage() {
@@ -11,6 +13,7 @@ export function NFTDetailsPage() {
 
     const { addItem, isAdding } = useCart()
     const [cartMessage, setCartMessage] = useState('')
+    const { data: catalog } = useNFTs({ limit: 50, sort: 'newest' })
 
     const {
         data: nft,
@@ -43,6 +46,14 @@ export function NFTDetailsPage() {
             </div>
         )
     }
+
+    const otherNFTs = (catalog?.items ?? []).filter(
+        (item) => item.id !== nft.id,
+    )
+    const relatedNFTs = [
+        ...otherNFTs.filter((item) => item.collection === nft.collection),
+        ...otherNFTs.filter((item) => item.collection !== nft.collection),
+    ]
 
     return (
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col px-4 py-5 sm:px-6 sm:py-8 lg:px-10">
@@ -178,6 +189,10 @@ export function NFTDetailsPage() {
                     </div>
                 </div>
             </div>
+            <RecommendationCarousel
+                title="Mais desta coleção"
+                nfts={relatedNFTs}
+            />
             </div>
         )
 }

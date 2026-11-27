@@ -23,7 +23,7 @@ export function CatalogToolbar({
 
   return (
     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      <div className="flex min-w-0 flex-nowrap items-center gap-2 sm:gap-5">
+      <div role="group" aria-label="Categorias de NFTs" className="flex w-full min-w-0 max-w-full flex-nowrap items-center justify-between gap-1 overflow-hidden sm:w-auto sm:justify-start sm:gap-5">
         {tabs.map((item) => (
           <button
             key={item.id}

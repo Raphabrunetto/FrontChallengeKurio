@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
+import { USE_MOCKS } from '../../services/api/axios'
 
 import type { ReactNode } from 'react'
 import type { Collector } from '../../features/account/types/account'
@@ -55,6 +56,11 @@ export function SocketProvider({
     const user = authQuery.data
 
     useEffect(() => {
+        if (USE_MOCKS) {
+            lastVersions.current.clear()
+            return
+        }
+
         const userId = user?.id
 
         if (!userId) {

@@ -39,13 +39,6 @@ body {
   background: var(--color-background);
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
 button {
   cursor: pointer;
 }

@@ -3,11 +3,11 @@
 
 ## 1. Overview
 
-Kurio is a frontend NFT marketplace developed with React, TypeScript and Vite.
+Kurio is an NFT marketplace built with React, TypeScript and Vite. It can use either the Express API or Mock Service Worker (MSW), selected through `VITE_ENABLE_MOCKS`.
 
-The application uses a mock REST API powered by Mock Service Worker (MSW), allowing the main marketplace flows to work without depending on a private backend.
+Production builds use MSW by default so the deployed demo does not depend on a running API. Development uses the local Express API by default. Set `VITE_ENABLE_MOCKS=true` to use MSW in development, or `VITE_ENABLE_MOCKS=false` to select the API in production.
 
-The architecture separates the application into pages, features, shared components, API services, providers and mock handlers.
+The Express API currently implements authentication, NFT catalog and cart routes. Checkout, wallets and order history are implemented by MSW only.
 
 ## 2. Technology Stack
 
@@ -22,7 +22,7 @@ The architecture separates the application into pages, features, shared componen
 - React Hook Form
 - Zod
 - Decimal.js
-- Socket.IO Client (dependency available; active integration must be verified)
+- Socket.IO Client (realtime client and server code are present; production session bootstrap is not enabled)
 
 ## 3. Application Structure
 
@@ -48,7 +48,7 @@ Routes should be tested both through in-app navigation and direct browser access
 
 ## 5. API Contracts
 
-The frontend communicates through REST-style endpoints intercepted by MSW.
+The frontend uses the same service layer in both modes. MSW intercepts requests in demo mode; Express serves the implemented routes in backend mode.
 
 ### Authentication
 
@@ -68,7 +68,7 @@ The frontend communicates through REST-style endpoints intercepted by MSW.
 
 The catalog supports parameters such as search, category, sorting, price range, page and limit.
 
-### Cart and Orders
+### Cart (Express and MSW)
 
 | Method | Endpoint | Purpose |
 |---|---|---|
@@ -77,25 +77,19 @@ The catalog supports parameters such as search, category, sorting, price range, 
 | PATCH | `/api/cart/items/:id` | Update item quantity |
 | DELETE | `/api/cart/items/:id` | Remove an item |
 | DELETE | `/api/cart` | Clear the cart |
-| POST | `/api/checkout` | Complete a purchase |
-| GET | `/api/orders` | Retrieve order history |
-
-### Wallets
+The following endpoints are handled by MSW, but are not implemented by the Express API in this repository:
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/api/wallets` | List user wallets |
-| POST | `/api/wallets` | Create a wallet |
-| PUT | `/api/wallets/:id` | Update a wallet |
-| DELETE | `/api/wallets/:id` | Remove a wallet |
+| POST | `/api/checkout` | Simulate checkout, inventory update and order creation |
+| GET | `/api/orders` | Retrieve the current user's simulated order history |
+| GET, POST, PUT, DELETE | `/api/wallets` and `/api/wallets/:id` | Manage simulated wallets |
 
 ## 6. Authentication and Session Policy
 
-Authentication is simulated through MSW.
+MSW stores demo users and session state in browser `localStorage`. Express validates credentials through its auth routes and keeps users and session tokens in in-memory maps; passwords are hashed by the server.
 
-User and session information are persisted in browser localStorage.
-
-Relevant storage keys:
+In mock mode, relevant storage keys include:
 
 - `kurio-users`: registered mock users.
 - `kurio-session`: current mock session.
@@ -104,17 +98,17 @@ TanStack Query manages the authenticated user state through the `['auth', 'user'
 
 The authentication query uses a five-minute stale time and disables automatic retries.
 
-This is a frontend simulation and must not be considered production-grade authentication or authorization.
+The Express authentication flow is an integration example, not a production identity system: data is in memory and is lost when the server restarts.
 
 ## 7. Cart and Inventory State
 
-Cart data is persisted separately for each user.
+TanStack Query manages cart data and mutations. In MSW mode, cart and inventory are persisted in browser `localStorage`; in Express mode, the cart is stored in server memory.
 
-Storage keys:
+Mock storage keys:
 
-- `kurio-cart:<collectorId>`: authenticated user's cart.
-- `kurio-cart:guest`: guest cart.
-- `kurio-inventory`: available NFT inventory.
+- `kurio-cart:<collectorId>`: authenticated user's mock cart.
+- `kurio-cart:guest`: guest mock cart.
+- `kurio-inventory`: simulated available NFT inventory.
 
 TanStack Query manages cart data and mutations.
 
@@ -127,7 +121,7 @@ Cart mutations update or invalidate the relevant query data to keep the interfac
 
 ## 8. Checkout Flow
 
-The checkout process is simulated by the mock API.
+The checkout process is implemented by MSW only. The Express API currently has no checkout route.
 
 The flow includes:
 
@@ -152,7 +146,7 @@ A network fee of `0.015 ETH` is included in the checkout calculation.
 
 Decimal.js is used for monetary calculations to avoid common floating-point precision problems.
 
-Orders are persisted in localStorage under `kurio-orders`.
+Mock orders are persisted in localStorage under `kurio-orders`. Wallet validation and payment methods are demonstrations; no blockchain transaction or real payment is made.
 
 ## 9. Data Fetching and Cache Strategy
 
@@ -178,21 +172,15 @@ MSW intercepts HTTP requests and provides deterministic mock responses.
 
 The mock worker is initialized by the application entry point before React is rendered.
 
-This setup allows the deployed application to run without an external backend.
+This setup allows the deployed application to run without an external backend. The handlers cover authentication, catalog, cart, checkout, wallet and order-history flows.
 
-The same mock handlers are used to reproduce the main application scenarios during development and testing.
+The same mock handlers reproduce the main application scenarios during development and E2E testing. In production builds, MSW is enabled unless `VITE_ENABLE_MOCKS=false` is set.
 
 ## 11. Real-Time Communication
 
-The project includes the `socket.io-client` dependency.
+`SocketProvider` connects authenticated users to the configured realtime server, reconciles NFT snapshots and applies `nft.updated` events to TanStack Query caches. The Express server emits those events when its development NFT update route changes an NFT.
 
-However, the presence of the dependency alone does not establish an active Socket.IO integration.
-
-The current mock REST architecture does not depend on a live Socket.IO server.
-
-Consequently, real-time server events and reconciliation between REST responses and Socket.IO events are not part of the confirmed implementation.
-
-A future backend integration could introduce server events for inventory changes, order updates and other marketplace activity.
+The client first requests a token from `/dev/session`. That temporary endpoint is disabled when `NODE_ENV=production`, so the current realtime bootstrap is for development and is not production-ready.
 
 ## 12. UX Decisions
 
@@ -204,19 +192,21 @@ The interface prioritizes:
 - Clear checkout totals and fees.
 - Purchase confirmation.
 - Account and order history access.
+- Related NFT scrollers on detail and cart pages.
+- Responsive layouts checked at mobile widths of 320, 375 and 390 px.
 - Consistent loading, empty and error states.
 
 The mock architecture allows the main user journeys to be demonstrated without external service dependencies.
 
 ## 13. Limitations
 
-- API responses are simulated by MSW.
-- Authentication is not backed by a secure identity provider.
-- User, cart, inventory and order persistence relies on browser localStorage.
+- MSW is the default for production demos; the Express API is optional.
+- Express implements authentication, catalog and cart only; checkout, wallets and order history are MSW-only.
+- Express users, sessions, carts and inventory changes are stored in memory and are lost on restart.
+- Mock users, carts, inventory, wallets and orders are stored in browser localStorage.
 - No real blockchain transaction is performed.
 - No real cryptocurrency payment is processed.
-- No live backend or confirmed Socket.IO event integration is required.
-- Data is local to the browser and is not shared between users or devices.
+- The Socket.IO session bootstrap uses a development-only route and is disabled in production.
 
 ## 14. Running the Project
 
@@ -262,6 +252,8 @@ Run end-to-end tests:
 npm run test:e2e
 ```
 
+The Playwright suite covers authentication, cart, purchase and inventory flows. The responsive test visits login, registration, account, home, NFT details, cart and checkout at 320, 375 and 390 px, checks for horizontal page overflow, and verifies both recommendation scrollers.
+
 Run tests with the browser visible:
 
 ```bash
@@ -290,4 +282,4 @@ Production URL:
 
 https://kurio-nft-marketplace-sand.vercel.app
 
-The deployed frontend uses MSW and does not require private backend credentials.
+The deployed frontend uses MSW by default and does not require private backend credentials. Set `VITE_ENABLE_MOCKS=false` only when using Express; checkout, wallet and order-history endpoints are not implemented there.

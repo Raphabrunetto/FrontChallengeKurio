@@ -1,6 +1,6 @@
 # Kurio NFT Marketplace
 
-Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com API própria em Node.js/Express e comunicação em tempo real via Socket.IO.
+Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com API em Node.js/Express e integração de desenvolvimento via Socket.IO.
 
 ## Links
 
@@ -10,7 +10,7 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 
 > Se os domínios de deploy forem alterados, atualize esta seção e as variáveis de ambiente.
 
-O projeto oferece dois modos: MSW para demonstração e API Express para integração real. Em produção, o MSW é o padrão para que o deploy funcione sem depender do serviço de backend; `VITE_ENABLE_MOCKS=false` seleciona a API real. Em desenvolvimento, o padrão é usar a API local, e `VITE_ENABLE_MOCKS=true` ativa a simulação.
+O projeto oferece dois modos: MSW para demonstração e API Express para integração real. Em produção, o MSW é o padrão para que o deploy funcione sem depender do serviço de backend; `VITE_ENABLE_MOCKS=false` seleciona a API real. Em desenvolvimento, o padrão é usar a API local, e `VITE_ENABLE_MOCKS=true` ativa a simulação. A API Express cobre autenticação, catálogo e carrinho; checkout, carteiras e histórico de pedidos estão disponíveis apenas no modo MSW.
 
 ## Tecnologias
 
@@ -39,13 +39,16 @@ O projeto oferece dois modos: MSW para demonstração e API Express para integra
 - Catálogo de NFTs consumido pela API.
 - Busca, categorias, ordenação e filtros de preço.
 - Visualização de informações dos NFTs.
+- Carrosséis de recomendações nos detalhes e no carrinho.
 - Carrinho com inclusão, atualização de quantidade e remoção de itens.
 - API REST para catálogo e carrinho.
-- Comunicação em tempo real para atualização de NFTs.
+- Integração de desenvolvimento via Socket.IO para atualização de NFTs ao usar a API Express.
 - Interface responsiva.
 - Cadastro, login, consulta de sessão e logout por MSW ou API Express.
 
 **Nota:** carteiras e checkout ainda são demonstrativos e não estão integralmente conectados e persistidos no back-end.
+
+O fluxo de pedidos e a gestão de carteiras também usam handlers MSW. A API Express deste repositório não expõe rotas de checkout, carteiras ou histórico de pedidos.
 
 Busca, filtros, ordenação e carrinho usam interações inspiradas nos padrões de shadcn/ui, adaptadas com Tailwind CSS, transições leves e suporte à preferência por movimento reduzido.
 
@@ -171,9 +174,9 @@ O Playwright inicia o Vite automaticamente e ativa o MSW para que os testes usem
 npx playwright test tests/e2e/auth.spec.ts
 ```
 
-Última validação local: **16 testes passaram** (`npm run test:e2e`, Chromium, 27/11/2026).
+Última validação local: **18 testes passaram** (`npm run test:e2e`, Chromium, 27/11/2026).
 
-O teste `responsive.spec.ts` também percorre login, cadastro, conta, início, detalhe, carrinho e checkout em larguras de 320, 375 e 390 px e verifica que nenhuma rota cria rolagem horizontal.
+O teste `responsive.spec.ts` também percorre login, cadastro, conta, início, detalhe, carrinho e checkout em larguras de 320, 375 e 390 px, verifica que nenhuma rota cria rolagem horizontal e confirma que os carrosséis aparecem nos detalhes e no carrinho.
 
 ## Deploy
 
@@ -250,7 +253,7 @@ No modo Express, o frontend guarda o token de sessão no navegador e o envia com
 | --- | --- | --- |
 | `GET` | `/health` | Verifica se a API está ativa |
 
-O servidor também disponibiliza eventos Socket.IO para sincronização em tempo real, conforme a implementação atual.
+O servidor inclui eventos Socket.IO para sincronizar alterações de NFTs. A criação de sessão usada pelo cliente realtime depende da rota temporária `/dev/session`, desativada em produção; essa integração ainda não está pronta para uso no deploy de produção.
 
 ## Limitações conhecidas
 
@@ -258,6 +261,8 @@ O servidor também disponibiliza eventos Socket.IO para sincronização em tempo
 - **Autenticação:** usuários e sessões também ficam em memória; contas podem ser perdidas quando o processo do backend reiniciar.
 - **Pagamentos:** não existe integração com gateway de pagamento real. Os fluxos de pagamento são simulações.
 - **Mocks:** os handlers REST simulam autenticação, catálogo, carrinho/checkout e carteiras. O modo de integração real usa a API configurada.
+- **API Express:** nesta versão, checkout, carteiras e histórico de pedidos existem somente no modo MSW; não use `VITE_ENABLE_MOCKS=false` para esses fluxos.
+- **Tempo real:** o cliente Socket.IO está implementado, mas a rota temporária de sessão necessária para conectá-lo é desativada em produção.
 - **Render:** dependendo do plano, o serviço pode suspender após inatividade; a primeira requisição pode demorar alguns instantes.
 
 ## Validação antes da entrega
