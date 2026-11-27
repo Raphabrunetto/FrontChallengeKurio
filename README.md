@@ -10,7 +10,7 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 
 > Se os domínios de deploy forem alterados, atualize esta seção e as variáveis de ambiente.
 
-Cadastro e autenticação usam a API Express. O MSW só é iniciado localmente quando `VITE_ENABLE_MOCKS=true`; esse modo serve para testar os handlers simulados.
+O projeto oferece dois modos: MSW para demonstração e API Express para integração real. Em produção, o MSW é o padrão para que o deploy funcione sem depender do serviço de backend; `VITE_ENABLE_MOCKS=false` seleciona a API real. Em desenvolvimento, o padrão é usar a API local, e `VITE_ENABLE_MOCKS=true` ativa a simulação.
 
 ## Tecnologias
 
@@ -21,7 +21,7 @@ Cadastro e autenticação usam a API Express. O MSW só é iniciado localmente q
 - TanStack Router e TanStack Query
 - Axios
 - Socket.IO Client
-- MSW para simular autenticação localmente, quando habilitado
+- MSW para simular autenticação, catálogo, carrinho/checkout e carteiras no modo de demonstração
 
 **Back-end**
 - Node.js e Express
@@ -42,7 +42,7 @@ Cadastro e autenticação usam a API Express. O MSW só é iniciado localmente q
 - API REST para catálogo e carrinho.
 - Comunicação em tempo real para atualização de NFTs.
 - Interface responsiva.
-- Cadastro, login, consulta de sessão e logout pela API.
+- Cadastro, login, consulta de sessão e logout por MSW ou API Express.
 
 **Nota:** carteiras e checkout ainda são demonstrativos e não estão integralmente conectados e persistidos no back-end.
 
@@ -105,7 +105,7 @@ VITE_REALTIME_URL=http://localhost:3001
 
 As variáveis `VITE_*` são incluídas no bundle do navegador. Não coloque senhas, tokens privados ou segredos nelas.
 
-O backend local é usado por padrão durante o desenvolvimento. Para simular os endpoints de autenticação, adicione `VITE_ENABLE_MOCKS=true` ao `.env`.
+O backend local é usado por padrão durante o desenvolvimento. Para simular os endpoints de autenticação, adicione `VITE_ENABLE_MOCKS=true` ao `.env`. Para testar o backend real, use `VITE_ENABLE_MOCKS=false`.
 
 ### 4. Iniciar o back-end
 
@@ -182,6 +182,8 @@ Substitua `SEU-SERVICO` pelo domínio real do Render. Não acrescente `/api` ao 
 
 Depois de salvar as variáveis, faça um novo deploy para que o Vite incorpore os valores ao bundle. O domínio configurado em `CLIENT_ORIGIN` no Render deve corresponder ao domínio pelo qual o usuário acessa o front-end.
 
+O build de produção ativa os handlers REST do MSW por padrão, então a demonstração não depende do deploy do backend. Configure `VITE_ENABLE_MOCKS=false` na Vercel para usar a API Express real. O backend real mantém contas e sessões em memória; contas podem ser perdidas quando o serviço reiniciar.
+
 ## Endpoints da API
 
 ### Autenticação
@@ -193,7 +195,7 @@ Depois de salvar as variáveis, faça um novo deploy para que o Vite incorpore o
 | `GET` | `/api/auth/me` | Retorna a conta da sessão autenticada |
 | `POST` | `/api/auth/logout` | Encerra a sessão autenticada |
 
-O frontend guarda o token de sessão no navegador e o envia como `Authorization: Bearer <token>` nas chamadas à API. Senhas são armazenadas como hash no backend.
+No modo Express, o frontend guarda o token de sessão no navegador e o envia como `Authorization: Bearer <token>` nas chamadas à API. Senhas são armazenadas como hash no backend. No modo MSW, usuários de demonstração e sessão ficam no `localStorage` do navegador.
 
 ### NFTs
 
@@ -225,7 +227,7 @@ O servidor também disponibiliza eventos Socket.IO para sincronização em tempo
 - **Persistência:** o back-end utiliza estruturas em memória (`Map`). Sessões, carrinhos e alterações de estado podem ser perdidos quando o serviço reiniciar ou entrar em suspensão. Não há banco de dados persistente nesta versão.
 - **Autenticação:** usuários e sessões também ficam em memória; contas podem ser perdidas quando o processo do backend reiniciar.
 - **Pagamentos:** não existe integração com gateway de pagamento real. Os fluxos de pagamento são simulações.
-- **Mocks:** MSW só é iniciado em desenvolvimento quando `VITE_ENABLE_MOCKS=true`.
+- **Mocks:** os handlers REST simulam autenticação, catálogo, carrinho/checkout e carteiras. O modo de integração real usa a API configurada.
 - **Render:** dependendo do plano, o serviço pode suspender após inatividade; a primeira requisição pode demorar alguns instantes.
 
 ## Validação antes da entrega

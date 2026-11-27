@@ -5,11 +5,12 @@ import { RouterProvider } from '@tanstack/react-router'
 
 import { router } from './app/router'
 import { QueryProvider } from './app/providers/QueryProvider'
+import { USE_MOCKS } from './services/api/axios'
 
 import './index.css'
 
 async function bootstrap() {
-  if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === 'true') {
+  if (USE_MOCKS) {
     const { worker } = await import('./mocks/browser')
     await worker.start()
   }

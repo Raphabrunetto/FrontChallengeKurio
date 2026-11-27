@@ -1,6 +1,10 @@
 import axios from 'axios'
 
 export const AUTH_TOKEN_KEY = 'kurio-auth-token'
+const mockSetting = import.meta.env.VITE_ENABLE_MOCKS
+export const USE_MOCKS = mockSetting === 'true' || (
+  !import.meta.env.DEV && mockSetting !== 'false'
+)
 const API_URL = import.meta.env.VITE_API_URL || (
   import.meta.env.DEV
     ? 'http://localhost:3001'
@@ -8,7 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL || (
 )
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: USE_MOCKS ? '/' : API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

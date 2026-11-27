@@ -13,14 +13,45 @@ interface StoredUser {
   id: string
   name: string
   email: string
-  password: string
+  passwordSalt: string
+  passwordHash: string
   createdAt: string
+}
+
+async function hashPassword(
+  password: string,
+  salt: string = crypto.randomUUID(),
+) {
+  const digest = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(`${salt}:${password}`),
+  )
+  const hash = Array.from(new Uint8Array(digest), (byte) =>
+    byte.toString(16).padStart(2, '0'),
+  ).join('')
+
+  return { salt, hash }
 }
 
 function getUsers(): StoredUser[] {
   try {
     const stored = localStorage.getItem(USERS_KEY)
-    return stored ? JSON.parse(stored) as StoredUser[] : []
+    if (!stored) return []
+
+    const parsed = JSON.parse(stored) as Partial<StoredUser>[]
+    const users = parsed.filter(
+      (user): user is StoredUser =>
+        typeof user.id === 'string' &&
+        typeof user.name === 'string' &&
+        typeof user.email === 'string' &&
+        typeof user.passwordSalt === 'string' &&
+        typeof user.passwordHash === 'string' &&
+        typeof user.createdAt === 'string',
+    )
+
+    // Remove legacy mock records that stored passwords in clear text.
+    if (users.length !== parsed.length) saveUsers(users)
+    return users
   } catch {
     return []
   }
@@ -96,11 +127,13 @@ export const authHandlers = [
       )
     }
 
+    const { salt, hash } = await hashPassword(password)
     const newUser: StoredUser = {
       id: `collector-${Date.now()}`,
       name,
       email,
-      password,
+      passwordSalt: salt,
+      passwordHash: hash,
       createdAt: new Date().toISOString(),
     }
 
@@ -119,13 +152,12 @@ export const authHandlers = [
     const email = body.email?.trim().toLowerCase()
     const users = getUsers()
 
-    const user = users.find(
-      (item) =>
-        item.email === email &&
-        item.password === body.password,
-    )
+    const user = users.find((item) => item.email === email)
+    const { hash } = user
+      ? await hashPassword(body.password, user.passwordSalt)
+      : { hash: '' }
 
-    if (!user) {
+    if (!user || user.passwordHash !== hash) {
       return HttpResponse.json(
         { message: 'E-mail ou senha incorretos.' },
         { status: 401 },
