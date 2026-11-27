@@ -1,327 +1,226 @@
-# Kurio — NFT Marketplace
+# Kurio NFT Marketplace
 
-Marketplace de NFTs desenvolvido como desafio técnico de Front-end, com foco nos fluxos de descoberta, compra e gerenciamento da conta do colecionador.
+Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com API própria em Node.js/Express e comunicação em tempo real via Socket.IO.
 
-**Aplicação publicada:** https://kurio-nft-marketplace-sand.vercel.app  
-**Repositório:** https://github.com/Raphabrunetto/FrontChallengeKurio
+## Links
 
----
+- **Aplicação:** https://kurio-nft-marketplace-sand.vercel.app
+- **API:** https://frontchallengekurio.onrender.com
+- **Repositório:** https://github.com/Raphabrunetto/FrontChallengeKurio
 
-## 1. Sobre o projeto
+> Se os domínios de deploy forem alterados, atualize esta seção e as variáveis de ambiente.
 
-O Kurio é uma aplicação de marketplace de NFTs com dados e serviços simulados. O projeto permite explorar coleções, consultar detalhes dos NFTs, gerenciar um carrinho, realizar compras simuladas e acompanhar o histórico de pedidos.
+## Tecnologias
 
-A aplicação foi desenvolvida para funcionar sem dependência de backend privado, blockchain real ou gateway externo de pagamento.
+**Front-end**
+- React 19 e TypeScript
+- Vite
+- Tailwind CSS
+- TanStack Router e TanStack Query
+- Axios
+- Socket.IO Client
+- MSW para funcionalidades que ainda permanecem simuladas
 
-### Funcionalidades
+**Back-end**
+- Node.js e Express
+- Socket.IO
+- CORS
+- Estruturas em memória (`Map`)
 
-- **Descoberta de NFTs**
-  - Catálogo com listagem de NFTs.
-  - Pesquisa por nome, coleção ou criador.
-  - Filtro por categoria e faixa de preço.
-  - Ordenação por preço e data.
-  - Abas de novos lançamentos e itens em alta.
-  - Página de detalhes do NFT e disponibilidade de edições.
+**Deploy**
+- Vercel: front-end
+- Render: API e servidor Socket.IO
 
-- **Carrinho e compra**
-  - Adicionar, remover e alterar quantidades.
-  - Validação de estoque disponível.
-  - Resumo de valores e taxa de rede simulada.
-  - Cupons `KURIO10` e `KURIO20`.
-  - Checkout com PIX simulado ou carteira digital.
-  - Confirmação de compra e atualização do estoque.
+## Funcionalidades
 
-- **Conta do colecionador**
-  - Cadastro, login e logout simulados.
-  - Perfil do colecionador.
-  - Cadastro, edição e remoção de carteiras.
-  - Coleção de NFTs adquiridos.
-  - Histórico de compras.
+- Catálogo de NFTs consumido pela API.
+- Busca, categorias, ordenação e filtros de preço.
+- Visualização de informações dos NFTs.
+- Carrinho com inclusão, atualização de quantidade e remoção de itens.
+- API REST para catálogo e carrinho.
+- Comunicação em tempo real para atualização de NFTs.
+- Interface responsiva.
 
----
+**Nota:** partes do projeto ainda utilizam mocks no front-end. Autenticação, carteiras e checkout devem ser considerados demonstrativos enquanto não estiverem integralmente conectados e persistidos no back-end.
 
-## 2. Tecnologias
+## Estrutura
 
-| Tecnologia | Utilização |
-|---|---|
-| React | Interface |
-| TypeScript | Tipagem estática |
-| Vite | Desenvolvimento e build |
-| Tailwind CSS v4 | Estilização |
-| TanStack Router | Roteamento |
-| TanStack Query | Cache e gerenciamento de requisições |
-| Axios | Comunicação HTTP |
-| MSW | Simulação dos endpoints REST |
-| Decimal.js | Cálculos financeiros |
-| React Hook Form | Gerenciamento de formulários |
-| Zod | Validação de dados |
-| Lucide React | Ícones |
-| Playwright | Testes End-to-End |
-| Oxlint | Análise estática de código |
+```text
+.
+├── server/
+│   ├── data/
+│   │   └── nfts.json
+│   ├── routes/
+│   │   ├── cart.js
+│   │   ├── dev.js
+│   │   ├── nfts.js
+│   │   └── orders.js
+│   ├── index.js
+│   ├── socket.js
+│   └── store.js
+├── src/
+│   ├── app/
+│   │   ├── providers/
+│   │   └── router/
+│   ├── features/
+│   ├── mocks/
+│   ├── services/
+│   └── main.tsx
+├── package.json
+└── vite.config.ts
+```
 
----
+## Requisitos
 
-## 3. Requisitos
+- Node.js (versão LTS recente recomendada)
+- npm
 
-- Node.js compatível com Vite 8.
-- npm.
-- Git.
+## Executar localmente
 
-Não é necessário configurar backend, banco de dados, carteira blockchain ou gateway de pagamento.
-
----
-
-## 4. Instalação
-
-Clone o repositório:
+### 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/Raphabrunetto/FrontChallengeKurio.git
-```
-
-Entre na pasta:
-
-```bash
 cd FrontChallengeKurio
 ```
 
-Instale as dependências:
+### 2. Instalar dependências
 
 ```bash
-npm ci
+npm install
 ```
 
-Inicie o ambiente de desenvolvimento:
+### 3. Configurar o ambiente
+
+Crie um arquivo `.env` na raiz:
+
+```env
+VITE_API_URL=http://localhost:3001
+VITE_REALTIME_URL=http://localhost:3001
+```
+
+As variáveis `VITE_*` são incluídas no bundle do navegador. Não coloque senhas, tokens privados ou segredos nelas.
+
+### 4. Iniciar o back-end
+
+Em um terminal:
+
+```bash
+npm run server
+```
+
+A API ficará disponível em `http://localhost:3001`.
+
+- Health check: `http://localhost:3001/health`
+- Catálogo: `http://localhost:3001/api/nfts`
+
+A rota `/` não serve uma página HTML: o servidor é uma API.
+
+### 5. Iniciar o front-end
+
+Em outro terminal:
 
 ```bash
 npm run dev
 ```
 
-A aplicação estará disponível em:
+Abra o endereço informado pelo Vite, normalmente `http://localhost:5173`.
 
-```text
-http://localhost:5173
-```
+Mantenha os dois terminais ativos durante o desenvolvimento.
 
-### Variáveis de ambiente
-
-Não são necessárias variáveis de ambiente para executar o projeto.
-
-O Mock Service Worker (MSW) é inicializado pela aplicação e intercepta as requisições simuladas, inclusive na versão publicada.
-
----
-
-## 5. Scripts disponíveis
+## Scripts
 
 | Comando | Descrição |
-|---|---|
-| `npm run dev` | Inicia o ambiente de desenvolvimento |
-| `npm run build` | Verifica os tipos e gera o build de produção |
-| `npm run preview` | Executa uma prévia do build |
-| `npm run typecheck` | Executa a verificação de TypeScript |
+| --- | --- |
+| `npm run dev` | Inicia o Vite |
+| `npm run server` | Inicia Express e Socket.IO |
+| `npm run build` | Verifica os tipos e gera o build |
+| `npm run typecheck` | Executa a verificação TypeScript |
 | `npm run lint` | Executa o Oxlint |
-| `npm run test:e2e` | Executa os testes Playwright |
-| `npm run test:e2e:headed` | Executa os testes com navegador visível |
-| `npm run test:e2e:report` | Abre o relatório do Playwright |
-| `npm run audit:lighthouse` | Executa a auditoria Lighthouse |
 
-Para executar os testes E2E, instale também os navegadores do Playwright, caso ainda não estejam disponíveis:
+## Deploy
 
-```bash
-npx playwright install chromium
+### Back-end — Render
+
+Configure o serviço Node.js:
+
+- **Build Command:** `npm install`
+- **Start Command:** `npm run server`
+
+Adicione a variável:
+
+```env
+CLIENT_ORIGIN=https://SEU-DOMINIO-VERCEL.vercel.app
 ```
 
-### Auditoria Lighthouse
+Se precisar liberar mais de uma origem, informe os domínios separados por vírgula, conforme a configuração CORS do servidor.
 
-Instale a dependência de auditoria:
+Após o deploy, teste:
 
-```bash
-npm install -D lighthouse
+```text
+https://SEU-SERVICO.onrender.com/health
+https://SEU-SERVICO.onrender.com/api/nfts
 ```
 
-Gere o build:
+### Front-end — Vercel
+
+Importe o repositório na Vercel e configure as variáveis de ambiente para Production (e Preview, se necessário):
+
+```env
+VITE_API_URL=https://SEU-SERVICO.onrender.com
+VITE_REALTIME_URL=https://SEU-SERVICO.onrender.com
+```
+
+Substitua `SEU-SERVICO` pelo domínio real do Render. Não acrescente `/api` ao final.
+
+Depois de salvar as variáveis, faça um novo deploy para que o Vite incorpore os valores ao bundle. O domínio configurado em `CLIENT_ORIGIN` no Render deve corresponder ao domínio pelo qual o usuário acessa o front-end.
+
+## Endpoints da API
+
+### NFTs
+
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `GET` | `/api/nfts` | Lista NFTs e aceita parâmetros de consulta do catálogo |
+| `GET` | `/api/nfts/:id` | Busca um NFT pelo identificador |
+
+### Carrinho
+
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `GET` | `/api/cart` | Consulta o carrinho |
+| `POST` | `/api/cart/items` | Adiciona um NFT |
+| `PATCH` | `/api/cart/items/:id` | Atualiza a quantidade |
+| `DELETE` | `/api/cart/items/:id` | Remove um item |
+| `DELETE` | `/api/cart` | Limpa o carrinho |
+
+### Saúde
+
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `GET` | `/health` | Verifica se a API está ativa |
+
+O servidor também disponibiliza eventos Socket.IO para sincronização em tempo real, conforme a implementação atual.
+
+## Limitações conhecidas
+
+- **Persistência:** o back-end utiliza estruturas em memória (`Map`). Sessões, carrinhos e alterações de estado podem ser perdidos quando o serviço reiniciar ou entrar em suspensão. Não há banco de dados persistente nesta versão.
+- **Pagamentos:** não existe integração com gateway de pagamento real. Os fluxos de pagamento são simulações.
+- **Mocks:** funcionalidades ainda não migradas para a API podem continuar utilizando MSW.
+- **Render:** dependendo do plano, o serviço pode suspender após inatividade; a primeira requisição pode demorar alguns instantes.
+
+## Validação antes da entrega
+
+Execute:
 
 ```bash
+npm run typecheck
+npm run lint
 npm run build
 ```
 
-Inicie o preview em um terminal:
-
-```bash
-npm run preview
-```
-
-Em outro terminal, execute:
-
-```bash
-npm run audit:lighthouse
-```
-
-O relatório HTML é gerado em `lighthouse-report.html`.
+Avisos do lint não necessariamente impedem o build. Corrija erros de TypeScript ou falhas de build antes de publicar.
 
 ---
-
-## 6. Dados simulados e cenários
-
-Os dados do marketplace são fornecidos por fixtures locais e handlers do MSW.
-
-Os principais dados persistidos no navegador utilizam as seguintes chaves:
-
-| Chave | Conteúdo |
-|---|---|
-| `kurio-users` | Colecionadores cadastrados |
-| `kurio-session` | Sessão atual |
-| `kurio-cart:<collectorId>` | Carrinho por colecionador |
-| `kurio-cart:guest` | Carrinho de visitante |
-| `kurio-inventory` | Estoque atualizado |
-| `kurio-orders` | Histórico de pedidos |
-| `kurio-wallets` | Carteiras cadastradas |
-
-### Credenciais fictícias
-
-Não existe uma conta de demonstração fixa obrigatória.
-
-Para testar a aplicação:
-
-1. Acesse a tela de cadastro.
-2. Informe um nome, e-mail e senha fictícios.
-3. Finalize o cadastro.
-4. Utilize as mesmas credenciais para realizar login posteriormente.
-
-Os dados são armazenados localmente no navegador.
-
-### Cupons disponíveis
-
-| Cupom | Desconto |
-|---|---:|
-| `KURIO10` | 10% |
-| `KURIO20` | 20% |
-
-### Reset dos cenários
-
-Para começar novamente com os dados iniciais:
-
-1. Abra as ferramentas de desenvolvedor do navegador (`F12`).
-2. Acesse a aba **Application**.
-3. Abra **Local Storage**.
-4. Selecione o domínio da aplicação.
-5. Limpe os dados armazenados.
-6. Recarregue a página.
-
-Isso remove os usuários, sessão, carrinhos, carteiras, pedidos e alterações de estoque armazenadas naquele navegador.
-
----
-
-## 7. Reprodução de cenários de falha
-
-Os seguintes cenários podem ser reproduzidos pela interface:
-
-| Cenário | Como reproduzir | Resultado esperado |
-|---|---|---|
-| Login inválido | Informar e-mail ou senha incorretos | Mensagem de autenticação inválida |
-| E-mail duplicado | Cadastrar novamente um e-mail existente | Requisição rejeitada |
-| Carrinho vazio | Acessar o checkout sem itens | Compra não permitida |
-| Estoque insuficiente | Tentar adicionar mais unidades que o estoque disponível | Operação rejeitada |
-| Quantidade inválida | Enviar quantidade maior que o estoque pela API simulada | Resposta HTTP 409 |
-| Cupom inválido | Informar um código inexistente | Mensagem de cupom inválido |
-| Carteira não selecionada | Tentar pagar com carteira sem selecionar uma | Compra não permitida |
-| Usuário não autenticado | Acessar rotas protegidas sem sessão | Redirecionamento para login |
-
-Os handlers MSW simulam respostas HTTP de sucesso e falha, permitindo validar os fluxos sem backend real.
-
----
-
-## 8. Rotas da aplicação
-
-| Rota | Descrição | Acesso |
-|---|---|---|
-| `/` | Página inicial e catálogo | Público |
-| `/nft/:nftId` | Detalhes de um NFT | Público |
-| `/cart` | Carrinho de compras | Público |
-| `/login` | Login | Público |
-| `/register` | Cadastro | Público |
-| `/account` | Conta do colecionador | Autenticado |
-| `/checkout` | Finalização da compra | Autenticado |
-
-As rotas são gerenciadas pelo TanStack Router.
-
----
-
-## 9. Testes automatizados
-
-A suíte E2E utiliza Playwright com Chromium.
-
-Execute todos os testes:
-
-```bash
-npm run test:e2e
-```
-
-Execute com navegador visível:
-
-```bash
-npm run test:e2e:headed
-```
-
-Os testes cobrem:
-
-- Carregamento da página inicial.
-- Proteção de rotas.
-- Cadastro e login.
-- Persistência da sessão após atualização.
-- Operações do carrinho.
-- Validação de estoque.
-- Finalização de compra.
-- Aplicação de cupom.
-- Atualização do estoque após compra.
-- Histórico de compras.
-
-### Resultado validado
-
-Na execução local registrada durante o desenvolvimento:
-
-```text
-Running 15 tests
-
-15 passed
-```
-
----
-
-## 10. Limitações e escopo
-
-Este projeto utiliza serviços simulados para reproduzir os fluxos esperados de um marketplace.
-
-Não fazem parte do escopo:
-
-- Integração real com blockchain.
-- Conexão com extensões de carteira.
-- Transações reais em Ethereum ou Polygon.
-- Gateway de pagamento real.
-- Backend de produção.
-- Persistência compartilhada entre dispositivos ou navegadores.
-
-Os dados de cadastro, sessão, carrinho, carteira, estoque e pedidos são armazenados no `localStorage` do navegador.
-
-As credenciais e os mecanismos de autenticação são exclusivamente demonstrativos e não devem ser utilizados em produção real.
-
----
-
-## 11. Publicação
-
-A aplicação está publicada na Vercel:
-
-**https://kurio-nft-marketplace-sand.vercel.app**
-
-O deploy é realizado a partir da branch `main` do repositório GitHub.
-
-O MSW é inicializado também no ambiente publicado, permitindo executar os fluxos simulados sem depender de serviços externos.
-
----
-
-## 12. Autor
 
 Desenvolvido por **Raphael Brunetto**.
-
-- GitHub: https://github.com/Raphabrunetto
-- Repositório do projeto: https://github.com/Raphabrunetto/FrontChallengeKurio
