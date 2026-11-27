@@ -35,3 +35,6 @@ playwright/.cache/
 
 # Build
 coverage/
+
+# Lighthouse reports
+lighthouse-report.html
