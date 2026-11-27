@@ -18,6 +18,7 @@ O projeto oferece dois modos: MSW para demonstração e API Express para integra
 - React 19 e TypeScript
 - Vite
 - Tailwind CSS
+- shadcn/ui (padrões de botão, seleção e foco adaptados ao tema Kurio)
 - TanStack Router e TanStack Query
 - Axios
 - Socket.IO Client
@@ -45,6 +46,8 @@ O projeto oferece dois modos: MSW para demonstração e API Express para integra
 - Cadastro, login, consulta de sessão e logout por MSW ou API Express.
 
 **Nota:** carteiras e checkout ainda são demonstrativos e não estão integralmente conectados e persistidos no back-end.
+
+Busca, filtros, ordenação e carrinho usam interações inspiradas nos padrões de shadcn/ui, adaptadas com Tailwind CSS, transições leves e suporte à preferência por movimento reduzido.
 
 ## Estrutura
 

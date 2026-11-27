@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ChevronDown, SlidersHorizontal } from 'lucide-react'
+import { ChevronDown, RotateCcw, SlidersHorizontal } from 'lucide-react'
 import { useNFTs } from '../hooks/useNFTs'
 
 const categories = [
@@ -61,7 +61,7 @@ export function CatalogSidebar({
         type="button"
         onClick={() => setIsMobileOpen((open) => !open)}
         aria-expanded={isMobileOpen}
-        className="flex w-full items-center justify-between rounded-lg border border-[#704b30] bg-[#211711] p-4 text-sm font-semibold text-[#eee3d2] md:hidden"
+        className="flex w-full items-center justify-between rounded-lg border border-[#704b30] bg-[#211711] p-4 text-sm font-semibold text-[#eee3d2] shadow-sm transition duration-200 hover:border-[#d99045] hover:bg-[#291b15] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d99045]/60 md:hidden"
       >
         <span className="flex items-center gap-2">
           <SlidersHorizontal size={16} />
@@ -70,7 +70,7 @@ export function CatalogSidebar({
 
         <ChevronDown
           size={18}
-          className={`transition-transform ${isMobileOpen ? 'rotate-180' : ''}`}
+          className={`transition-transform duration-300 ${isMobileOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -90,14 +90,14 @@ export function CatalogSidebar({
                 type="button"
                 onClick={() => onCategoryChange('')}
                 aria-pressed={selectedCategory === ''}
-                className={`flex w-full items-center justify-between text-left text-[11px] transition hover:text-[#d99045] ${
+                className={`group flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-[11px] transition-all duration-200 hover:translate-x-0.5 hover:bg-[#2a1b12] hover:text-[#e9a45b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d99045]/50 ${
                   selectedCategory === ''
-                    ? 'font-bold text-[#d99045]'
+                    ? 'bg-[#2a1b12] font-bold text-[#d99045]'
                     : 'text-[#b9a184]'
                 }`}
               >
                 Todas as categorias
-                {selectedCategory === '' && <span>✓</span>}
+                {selectedCategory === '' && <span className="motion-check-pop">✓</span>}
               </button>
             </li>
 
@@ -107,16 +107,16 @@ export function CatalogSidebar({
                   type="button"
                   onClick={() => onCategoryChange(category.value)}
                   aria-pressed={selectedCategory === category.value}
-                  className={`flex w-full items-center justify-between text-left text-[11px] transition hover:text-[#d99045] ${
+                  className={`group flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-[11px] transition-all duration-200 hover:translate-x-0.5 hover:bg-[#2a1b12] hover:text-[#e9a45b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d99045]/50 ${
                     selectedCategory === category.value
-                      ? 'font-bold text-[#d99045]'
+                      ? 'bg-[#2a1b12] font-bold text-[#d99045]'
                       : 'text-[#b9a184]'
                   }`}
                 >
                   <span>{category.name}</span>
 
                   {selectedCategory === category.value && (
-                    <span>✓</span>
+                    <span className="motion-check-pop">✓</span>
                   )}
                 </button>
               </li>
@@ -147,7 +147,7 @@ export function CatalogSidebar({
                 value={minPriceInput}
                 onChange={(event) => onMinPriceChange(event.target.value)}
                 placeholder="0.00"
-                className="w-full min-w-0 rounded border border-[#704b30] bg-[#100d0b] px-2 py-2 text-xs text-[#eee3d2] outline-none focus:border-[#d99045]"
+                className="w-full min-w-0 rounded-md border border-[#704b30] bg-[#100d0b] px-2 py-2 text-xs text-[#eee3d2] outline-none transition duration-200 focus:border-[#d99045] focus:shadow-[0_0_0_3px_rgb(217_144_69_/_15%)]"
               />
             </div>
 
@@ -167,7 +167,7 @@ export function CatalogSidebar({
                 value={maxPriceInput}
                 onChange={(event) => onMaxPriceChange(event.target.value)}
                 placeholder="12.30"
-                className="w-full min-w-0 rounded border border-[#704b30] bg-[#100d0b] px-2 py-2 text-xs text-[#eee3d2] outline-none focus:border-[#d99045]"
+                className="w-full min-w-0 rounded-md border border-[#704b30] bg-[#100d0b] px-2 py-2 text-xs text-[#eee3d2] outline-none transition duration-200 focus:border-[#d99045] focus:shadow-[0_0_0_3px_rgb(217_144_69_/_15%)]"
               />
             </div>
           </div>
@@ -181,7 +181,7 @@ export function CatalogSidebar({
           <button
             type="button"
             onClick={onApplyPrice}
-            className="mt-3 rounded bg-[#d99045] px-4 py-2 text-[10px] font-bold text-[#170f0a] transition hover:bg-[#e9a45b]"
+            className="mt-3 rounded-md bg-[#d99045] px-4 py-2 text-[10px] font-bold text-[#170f0a] shadow-sm transition duration-200 hover:-translate-y-0.5 hover:bg-[#e9a45b] hover:shadow-[0_6px_18px_rgb(217_144_69_/_18%)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f0e5d5] focus-visible:ring-offset-2 focus-visible:ring-offset-[#211711]"
           >
             Aplicar
           </button>
@@ -262,8 +262,9 @@ export function CatalogSidebar({
         <button
           type="button"
           onClick={onClearFilters}
-          className="w-full rounded border border-[#704b30] px-3 py-2 text-[11px] text-[#b9a184] transition hover:border-[#d99045] hover:text-[#d99045]"
+          className="group flex w-full items-center justify-center gap-2 rounded-md border border-[#704b30] px-3 py-2 text-[11px] text-[#b9a184] transition-all duration-200 hover:border-[#d99045] hover:bg-[#2a1b12] hover:text-[#e9a45b] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d99045]/60"
         >
+          <RotateCcw size={13} className="transition-transform duration-300 group-hover:-rotate-45" />
           Limpar filtros
         </button>
       </div>

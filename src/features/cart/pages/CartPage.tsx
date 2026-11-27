@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Decimal from 'decimal.js'
+import { Trash2 } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 
 import { useCart } from '../hooks/useCart'
@@ -242,8 +243,9 @@ export function CartPage() {
                 type="button"
                 onClick={handleClearCart}
                 disabled={isUpdating}
-                className="mt-2 text-sm text-[#b9a895] underline transition hover:text-[#e5a18a] disabled:opacity-40"
+                className="group mt-2 inline-flex items-center gap-2 rounded-md border border-transparent px-2 py-2 text-sm text-[#b9a895] transition-all duration-200 hover:border-[#8f4939]/50 hover:bg-[#3a2018]/50 hover:text-[#e5a18a] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e5a18a]/60 disabled:opacity-40"
               >
+                <Trash2 size={14} className="transition-transform duration-200 group-hover:scale-110" />
                 Limpar carrinho
               </button>
             </section>

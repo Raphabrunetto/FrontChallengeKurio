@@ -18,13 +18,13 @@ export function CartHeader({ totalItems }: CartHeaderProps) {
       </Link>
 
       <div className="mb-8 flex flex-wrap items-center gap-3">
-        <ShoppingCart size={28} className="text-[#d99045]" />
+        <ShoppingCart size={28} className="motion-cart-hover text-[#d99045]" />
 
         <h1 className="text-2xl font-bold sm:text-3xl">
           Meu carrinho
         </h1>
 
-        <span className="rounded-full bg-[#2a1b12] px-3 py-1 text-sm text-[#d99045]">
+        <span key={totalItems} className="motion-count-pop rounded-full bg-[#2a1b12] px-3 py-1 text-sm text-[#d99045]">
           {totalItems} itens
         </span>
       </div>

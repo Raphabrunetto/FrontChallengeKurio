@@ -1,5 +1,5 @@
 
-import { SlidersHorizontal } from 'lucide-react'
+import { ChevronDown, SlidersHorizontal } from 'lucide-react'
 import type { NFTListParams } from '../types/nft'
 
 interface CatalogToolbarProps {
@@ -29,7 +29,7 @@ export function CatalogToolbar({
             key={item.id}
             type="button"
             onClick={() => onTabChange(item.id)}
-            className={`border-b-2 pb-2 text-xs transition ${
+            className={`border-b-2 pb-2 text-xs transition-all duration-200 hover:-translate-y-0.5 ${
               tab === item.id
                 ? 'border-[#d99045] font-semibold text-[#d99045]'
                 : 'border-transparent text-[#b9a184] hover:text-[#e9a45b]'
@@ -47,24 +47,21 @@ export function CatalogToolbar({
           Ordenar por:
         </label>
 
-        <select
-          id="sort-nfts"
-          value={sort}
-          onChange={(event) =>
-            onSortChange(event.target.value as NFTListParams['sort'])
-          }
-          className="min-w-0 flex-1 cursor-pointer bg-transparent text-[#b9a184] outline-none hover:text-[#d99045] sm:flex-none"
-        >
-          <option value="newest" className="bg-[#211711]">
-            Listados recentemente
-          </option>
-          <option value="price-asc" className="bg-[#211711]">
-            Menor preço
-          </option>
-          <option value="price-desc" className="bg-[#211711]">
-            Maior preço
-          </option>
-        </select>
+        <div className="group relative min-w-0 flex-1 sm:flex-none">
+          <select
+            id="sort-nfts"
+            value={sort}
+            onChange={(event) =>
+              onSortChange(event.target.value as NFTListParams['sort'])
+            }
+            className="w-full min-w-0 cursor-pointer appearance-none rounded-md border border-[#49301f] bg-[#211711] py-2 pl-3 pr-9 text-[11px] font-medium text-[#e9d5bb] shadow-sm outline-none transition-all duration-200 hover:-translate-y-0.5 hover:border-[#d99045] hover:bg-[#2a1b12] hover:text-[#e9a45b] hover:shadow-[0_5px_16px_rgb(0_0_0_/_25%)] focus-visible:border-[#d99045] focus-visible:ring-2 focus-visible:ring-[#d99045]/50 sm:w-auto"
+          >
+            <option value="newest" className="bg-[#211711]">Listados recentemente</option>
+            <option value="price-asc" className="bg-[#211711]">Menor preço</option>
+            <option value="price-desc" className="bg-[#211711]">Maior preço</option>
+          </select>
+          <ChevronDown size={14} aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#d99045] transition-transform duration-200 group-focus-within:rotate-180" />
+        </div>
       </div>
     </div>
   )

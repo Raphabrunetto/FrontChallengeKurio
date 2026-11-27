@@ -94,9 +94,9 @@ export function Header({
         <Link
           to="/cart"
           aria-label="Carrinho"
-          className="shrink-0 text-[#eee3d2] transition hover:text-[#d99045]"
+          className="group shrink-0 rounded-md p-2 text-[#eee3d2] transition duration-200 hover:scale-105 hover:bg-[#211711] hover:text-[#d99045] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d99045]/70"
         >
-          <ShoppingCart size={18} />
+          <ShoppingCart size={18} className="transition-transform duration-200 group-hover:-rotate-6" />
         </Link>
 
         {isLoading ? (
