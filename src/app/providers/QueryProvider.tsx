@@ -6,6 +6,8 @@ import {
 
 import type { ReactNode } from 'react'
 
+import { SocketProvider } from './SocketProvider'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -25,7 +27,9 @@ export function QueryProvider({
 }: QueryProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <SocketProvider>
+        {children}
+      </SocketProvider>
     </QueryClientProvider>
   )
 }

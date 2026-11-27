@@ -1,7 +1,8 @@
 
 import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import { ChevronDown, SlidersHorizontal } from 'lucide-react'
-import heroImg from '../../../assets/hero.png'
+import { useNFTs } from '../hooks/useNFTs'
 
 const categories = [
   { name: 'Arte digital', value: 'Art' },
@@ -39,6 +40,19 @@ export function CatalogSidebar({
   onClearFilters,
 }: CatalogSidebarProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+
+  const { data: nftData, isLoading: isLoadingFeatured } = useNFTs({
+    limit: 50,
+    sort: 'newest',
+  })
+
+  const featuredNFT = nftData?.items
+    ?.filter((nft) => nft.featured)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime(),
+    )[0]
 
   return (
     <aside className="min-w-0">
@@ -201,13 +215,47 @@ export function CatalogSidebar({
             NFT em destaque
           </h3>
 
-          <div className="overflow-hidden rounded-lg">
-            <img
-              src={heroImg}
-              alt="NFT em destaque"
-              className="aspect-square w-full object-cover"
-            />
-          </div>
+          {isLoadingFeatured ? (
+            <div className="aspect-square w-full animate-pulse rounded-lg bg-[#302117]" />
+          ) : featuredNFT ? (
+            <Link
+              to="/nft/$nftId"
+              params={{ nftId: featuredNFT.id }}
+              className="group block overflow-hidden rounded-lg border border-[#49301f] bg-[#100d0b]"
+            >
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={featuredNFT.image}
+                  alt={`${featuredNFT.name}, NFT em destaque`}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="p-3">
+                <h4 className="truncate text-xs font-bold text-[#eee3d2] transition group-hover:text-[#d99045]">
+                  {featuredNFT.name}
+                </h4>
+
+                <p className="mt-1 truncate text-[10px] text-[#a9957d]">
+                  {featuredNFT.collection}
+                </p>
+
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#d99045]">
+                    {featuredNFT.price} ETH
+                  </span>
+
+                  <span className="text-[10px] text-[#b9a184]">
+                    Ver NFT →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <p className="text-xs text-[#a9957d]">
+              Nenhum NFT em destaque disponível.
+            </p>
+          )}
         </div>
 
         {/* LIMPAR FILTROS */}

@@ -10,7 +10,6 @@ import './index.css'
 
 async function enableMocking() {
   const { worker } = await import('./mocks/browser')
-
   await worker.start()
 }
 

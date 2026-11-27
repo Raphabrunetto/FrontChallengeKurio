@@ -1,5 +1,6 @@
 export interface NFT {
   id: string
+  version?: number
   name: string
   description: string
   image: string
