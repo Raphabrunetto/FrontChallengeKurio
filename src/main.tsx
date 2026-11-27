@@ -9,12 +9,6 @@ import { QueryProvider } from './app/providers/QueryProvider'
 import './index.css'
 
 async function enableMocking() {
-  const shouldEnableMocks =
-    import.meta.env.DEV ||
-    import.meta.env.VITE_ENABLE_MOCKS === 'true'
-
-  if (!shouldEnableMocks) return
-
   const { worker } = await import('./mocks/browser')
 
   await worker.start()
