@@ -144,6 +144,31 @@ Mantenha os dois terminais ativos durante o desenvolvimento.
 | `npm run build` | Verifica os tipos e gera o build |
 | `npm run typecheck` | Executa a verificação TypeScript |
 | `npm run lint` | Executa o Oxlint |
+| `npm run test:e2e` | Executa a suíte E2E Playwright com MSW |
+| `npm run test:e2e:headed` | Executa a suíte E2E com navegador visível |
+| `npm run test:e2e:report` | Abre o relatório HTML da última execução |
+
+## Testes E2E
+
+Instale o navegador Chromium do Playwright uma vez após instalar as dependências:
+
+```bash
+npx playwright install chromium
+```
+
+Execute toda a suíte com:
+
+```bash
+npm run test:e2e
+```
+
+O Playwright inicia o Vite automaticamente e ativa o MSW para que os testes usem dados simulados e reproduzíveis, sem precisar iniciar o backend. O relatório HTML é gerado em `playwright-report/`; para abri-lo, use `npm run test:e2e:report`. Para executar um arquivo específico, por exemplo:
+
+```bash
+npx playwright test tests/e2e/auth.spec.ts
+```
+
+Última validação local: **15 testes passaram** (`npm run test:e2e`, Chromium, 27/11/2026).
 
 ## Deploy
 
