@@ -17,7 +17,7 @@ export function HeroSection() {
     )[0]
 
   return (
-    <section className="grid grid-cols-[minmax(0,1fr)_minmax(100px,38%)] items-center gap-3 overflow-hidden rounded-xl border border-[#49301f] bg-[#2a1b12] px-4 py-4 sm:gap-5 sm:px-5 md:grid-cols-2 md:gap-12 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-10">
+    <section className="mb-4 grid grid-cols-[minmax(0,1fr)_minmax(100px,38%)] items-center gap-3 overflow-hidden rounded-xl border border-[#49301f] bg-[#2a1b12] px-4 py-4 sm:gap-5 sm:px-5 md:mb-0 md:grid-cols-2 md:gap-12 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-10">
       <div className="order-1 min-w-0 max-w-xl md:order-1">
         <span className="mb-2 block text-[9px] tracking-[0.12em] text-[#c0ae98] sm:mb-4 sm:text-[11px]">
           Bem-vindo à Kurio
