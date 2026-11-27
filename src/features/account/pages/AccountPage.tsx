@@ -167,18 +167,18 @@ export function AccountPage() {
                 </Link>
 
                 {/* Perfil */}
-                <section className="rounded-lg border border-[#35251b] bg-[#1c140f] p-6 sm:p-8">
-                    <div className="flex items-center gap-4">
-                        <div className="rounded-lg bg-[#2a1b12] p-4">
+                <section className="min-w-0 rounded-lg border border-[#35251b] bg-[#1c140f] p-4 sm:p-8">
+                    <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                        <div className="shrink-0 rounded-lg bg-[#2a1b12] p-3 sm:p-4">
                             <UserRound size={32} className="text-[#d99045]" />
                         </div>
 
-                        <div>
-                            <h1 className="text-2xl font-bold sm:text-3xl">
+                        <div className="min-w-0 flex-1">
+                            <h1 className="break-words text-xl font-bold sm:text-3xl">
                                 Olá, {user.name}!
                             </h1>
 
-                            <p className="mt-1 text-sm text-[#b9a895]">
+                            <p className="mt-1 break-words text-xs text-[#b9a895] sm:text-sm">
                                 Bem-vindo à sua conta de colecionador.
                             </p>
                         </div>
@@ -192,7 +192,7 @@ export function AccountPage() {
 
                         <div>
                             <p className="text-sm text-[#9b8876]">E-mail</p>
-                            <p className="mt-1 font-bold">{user.email}</p>
+                            <p className="mt-1 break-all font-bold">{user.email}</p>
                         </div>
 
                         <div>

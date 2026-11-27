@@ -29,15 +29,16 @@ export function LoginPage() {
     }
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-[#100d0b] px-4 py-10 text-[#f0e5d5]">
-            <section className="w-full max-w-md rounded-lg border border-[#35251b] bg-[#1c140f] p-8">
+        <main className="flex min-h-screen items-center justify-center bg-[#100d0b] px-4 py-6 text-[#f0e5d5] sm:py-10">
+            <section className="w-full max-w-md rounded-lg border border-[#35251b] bg-[#1c140f] p-5 sm:p-8">
                 <div className="mb-8 text-center">
+                    <p className="mb-6 text-sm font-bold tracking-[0.3em] text-[#d99045]">KURIO</p>
                     <LogIn
                         size={38}
                         className="mx-auto mb-4 text-[#d99045]"
                     />
 
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="break-words text-2xl font-bold sm:text-3xl">
                         Bem-vindo de volta
                     </h1>
 

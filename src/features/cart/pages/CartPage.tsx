@@ -210,15 +210,15 @@ export function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#100d0b] px-6 py-10 text-[#f0e5d5]">
-      <div className="mx-auto max-w-6xl">
+    <div className="min-h-screen min-w-0 bg-[#100d0b] px-4 py-6 text-[#f0e5d5] sm:px-6 sm:py-10">
+      <div className="mx-auto min-w-0 max-w-6xl">
         <CartHeader totalItems={cart?.totalItems ?? 0} />
 
         {items.length === 0 ? (
           <EmptyCart />
         ) : (
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px]">
-            <section className="space-y-4">
+          <div className="grid min-w-0 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px]">
+            <section className="min-w-0 space-y-4">
               {cartError && (
                 <p
                   role="alert"
@@ -250,7 +250,7 @@ export function CartPage() {
               </button>
             </section>
 
-            <aside className="h-fit rounded-lg border border-[#35251b] bg-[#1c140f] p-7">
+            <aside className="h-fit min-w-0 rounded-lg border border-[#35251b] bg-[#1c140f] p-4 sm:p-6 lg:p-7">
               <h2 className="mb-6 text-lg font-bold">
                 Resumo do pedido
               </h2>

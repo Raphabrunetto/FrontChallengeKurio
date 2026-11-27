@@ -15,7 +15,7 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
       : 'Carteira digital (fictícia)'
 
   return (
-    <div className="mx-auto max-w-2xl rounded-lg border border-[#35251b] bg-[#1c140f] p-6 sm:p-8">
+    <div className="mx-auto min-w-0 max-w-2xl rounded-lg border border-[#35251b] bg-[#1c140f] p-4 sm:p-8">
       <div className="mb-6 flex flex-col items-center text-center">
         <CheckCircle2 size={56} className="mb-4 text-[#d99045]" />
 
@@ -29,19 +29,19 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
       </div>
 
       <div className="mb-6 space-y-3 rounded-lg bg-[#100d0b] p-4 text-sm">
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-3">
           <span className="text-[#b9a895]">Pedido</span>
-          <span className="font-medium">{order.id}</span>
+          <span className="min-w-0 break-all text-right font-medium">{order.id}</span>
         </div>
 
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-3">
           <span className="text-[#b9a895]">Pagamento</span>
           <span className="text-right">{paymentLabel}</span>
         </div>
 
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-3">
           <span className="text-[#b9a895]">Data</span>
-          <span>
+          <span className="text-right">
             {new Date(order.createdAt).toLocaleString('pt-BR')}
           </span>
         </div>
@@ -77,14 +77,14 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
         ))}
       </div>
 
-      <div className="mb-8 space-y-3 rounded-lg bg-[#100d0b] p-4 text-sm">
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+      <div className="mb-8 space-y-3 rounded-lg bg-[#100d0b] p-3 text-xs text-[#b9a895] sm:p-4 sm:text-sm">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
           <span>Subtotal</span>
-          <span>{order.subtotal} ETH</span>
+          <span className="whitespace-nowrap text-right">{order.subtotal} ETH</span>
         </div>
 
         {order.couponCode && (
-          <div className="flex justify-between gap-4 text-[#b9a895]">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
             <span>Cupom ({order.couponCode})</span>
             <span className="text-[#b8d69b]">
               Aplicado
@@ -92,21 +92,21 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
           </div>
         )}
 
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
           <span>Desconto</span>
-          <span className="text-[#b8d69b]">
+          <span className="whitespace-nowrap text-right text-[#b8d69b]">
             - {order.discount} ETH
           </span>
         </div>
 
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
           <span>Taxa de rede</span>
-          <span>{order.networkFee} ETH</span>
+          <span className="whitespace-nowrap text-right">{order.networkFee} ETH</span>
         </div>
 
-        <div className="flex justify-between gap-4 border-t border-[#493326] pt-4">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-2 border-t border-[#493326] pt-4">
           <span className="font-bold">Total pago</span>
-          <span className="text-lg font-bold text-[#e9a45b]">
+          <span className="whitespace-nowrap text-right text-base font-bold text-[#e9a45b] sm:text-lg">
             {new Decimal(order.total).toFixed(2)} ETH
           </span>
         </div>

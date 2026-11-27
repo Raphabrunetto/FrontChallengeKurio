@@ -27,25 +27,25 @@ export function CartItemCard({
   const reachedStockLimit = quantity >= nft.availableEditions
 
   return (
-    <article className="flex flex-col gap-4 rounded-lg border border-[#35251b] bg-[#1c140f] p-4 sm:flex-row sm:items-center">
+    <article className="relative flex min-w-0 items-start gap-3 rounded-lg border border-[#35251b] bg-[#1c140f] p-3 sm:items-center sm:gap-4 sm:p-4">
       <img
         src={nft.image}
         alt={nft.name}
         loading="lazy"
         decoding="async"
-        className="h-36 w-full rounded object-cover sm:h-28 sm:w-28"
+        className="h-20 w-20 shrink-0 rounded object-cover sm:h-28 sm:w-28"
       />
 
-      <div className="min-w-0 flex-1">
-        <p className="mb-1 text-xs uppercase tracking-wider text-[#d99045]">
+      <div className="min-w-0 flex-1 pr-6 sm:pr-0">
+        <p className="mb-1 truncate text-[9px] uppercase tracking-wider text-[#d99045] sm:text-xs">
           {nft.collection}
         </p>
 
-        <h2 className="break-words text-lg font-bold">
+        <h2 className="break-words text-sm font-bold sm:text-lg">
           {nft.name}
         </h2>
 
-        <p className="mt-1 text-sm text-[#b9a895]">
+        <p className="mt-1 text-xs text-[#b9a895] sm:text-sm">
           {nft.price} ETH por unidade
         </p>
 
@@ -93,7 +93,7 @@ export function CartItemCard({
         disabled={isUpdating}
         title="Remover NFT do carrinho"
         aria-label={`Remover ${nft.name} do carrinho`}
-        className="flex h-10 w-10 shrink-0 items-center justify-center self-end rounded text-[#9b7965] transition hover:bg-[#3a2018] hover:text-[#e5a18a] disabled:cursor-not-allowed disabled:opacity-40 sm:self-center"
+        className="absolute right-2 top-2 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[#9b7965] transition hover:bg-[#3a2018] hover:text-[#e5a18a] disabled:cursor-not-allowed disabled:opacity-40 sm:static sm:h-10 sm:w-10"
       >
         <Trash2 size={18} />
       </button>

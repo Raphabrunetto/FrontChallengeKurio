@@ -171,7 +171,9 @@ O Playwright inicia o Vite automaticamente e ativa o MSW para que os testes usem
 npx playwright test tests/e2e/auth.spec.ts
 ```
 
-Última validação local: **15 testes passaram** (`npm run test:e2e`, Chromium, 27/11/2026).
+Última validação local: **16 testes passaram** (`npm run test:e2e`, Chromium, 27/11/2026).
+
+O teste `responsive.spec.ts` também percorre login, cadastro, conta, início, detalhe, carrinho e checkout em larguras de 320, 375 e 390 px e verifica que nenhuma rota cria rolagem horizontal.
 
 ## Deploy
 

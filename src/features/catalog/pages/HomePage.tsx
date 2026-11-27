@@ -1,5 +1,7 @@
 
 import { useEffect, useState } from 'react'
+import { Home, Search, ShoppingCart, UserRound } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 
 import type { NFTListParams } from '../types/nft'
 import { useNFTs } from '../hooks/useNFTs'
@@ -10,6 +12,7 @@ import { CatalogSidebar } from '../components/CatalogSidebar'
 import { CatalogToolbar } from '../components/CatalogToolbar'
 import { NFTGrid } from '../components/NFTGrid'
 import { AuthModal } from '../../account/components/AuthModal'
+import { useAuth } from '../../account/hooks/useAuth'
 
 export function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -27,6 +30,7 @@ export function HomePage() {
     useState<NFTListParams['tab']>('all')
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const { user } = useAuth()
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -102,7 +106,7 @@ export function HomePage() {
   const totalPages = data?.totalPages ?? 1
 
   return (
-    <div className="min-h-screen bg-[#100d0b] text-[#eee3d2]">
+    <div className="min-h-screen bg-[#100d0b] pb-24 text-[#eee3d2] md:pb-0">
       <div className="mx-auto max-w-[1440px] px-5 lg:px-10">
         <Header
           searchValue={searchInput}
@@ -198,6 +202,49 @@ export function HomePage() {
           </div>
         </section>
       </div>
+
+      <nav
+        aria-label="Navegação principal mobile"
+        className="fixed inset-x-3 bottom-2 z-40 grid grid-cols-4 rounded-xl border border-[#493020] bg-[#211610]/95 p-2 shadow-xl backdrop-blur md:hidden"
+        style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
+      >
+        <Link to="/" aria-label="Início" className="flex min-h-11 flex-col items-center justify-center gap-1 text-[#d99045]">
+          <Home size={17} />
+          <span className="text-[9px]">Início</span>
+        </Link>
+        <button
+          type="button"
+          aria-label="Buscar NFTs"
+          onClick={() => {
+            setIsSearchOpen(true)
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className="flex min-h-11 flex-col items-center justify-center gap-1 text-[#b9a184] transition hover:text-[#e9a45b]"
+        >
+          <Search size={17} />
+          <span className="text-[9px]">Buscar</span>
+        </button>
+        <Link to="/cart" aria-label="Carrinho" className="flex min-h-11 flex-col items-center justify-center gap-1 text-[#b9a184] transition hover:text-[#e9a45b]">
+          <ShoppingCart size={17} />
+          <span className="text-[9px]">Carrinho</span>
+        </Link>
+        {user ? (
+          <Link to="/account" aria-label="Minha conta" className="flex min-h-11 flex-col items-center justify-center gap-1 text-[#b9a184] transition hover:text-[#e9a45b]">
+            <UserRound size={17} />
+            <span className="text-[9px]">Conta</span>
+          </Link>
+        ) : (
+          <button
+            type="button"
+            aria-label="Entrar na conta"
+            onClick={() => setIsAuthModalOpen(true)}
+            className="flex min-h-11 flex-col items-center justify-center gap-1 text-[#b9a184] transition hover:text-[#e9a45b]"
+          >
+            <UserRound size={17} />
+            <span className="text-[9px]">Conta</span>
+          </button>
+        )}
+      </nav>
 
       {isAuthModalOpen && (
         <AuthModal onClose={() => setIsAuthModalOpen(false)} />

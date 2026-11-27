@@ -21,7 +21,7 @@ export function NFTGrid({
   onClearFilters,
 }: NFTGridProps) {
   const gridClass =
-    'grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3'
+    'grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-3'
 
   return (
     <div className="min-w-0">

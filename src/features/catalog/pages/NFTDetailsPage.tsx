@@ -45,7 +45,7 @@ export function NFTDetailsPage() {
     }
 
     return (
-        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
+        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col px-4 py-5 sm:px-6 sm:py-8 lg:px-10">
             <div className="w-full lg:my-auto">
                 {/* VOLTAR */}
                 <Link
@@ -69,7 +69,7 @@ export function NFTDetailsPage() {
                     </div>
 
                     {/* INFORMAÇÕES */}
-                    <div className="min-w-0 py-1 sm:py-2">
+                    <div className="relative z-10 -mt-8 min-w-0 rounded-xl border border-[#35251b] bg-[#1c140f] p-4 sm:p-6 md:mt-0 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:py-2">
                         <p className="mb-3 text-xs uppercase tracking-widest text-[#d99045]">
                             {nft.collection}
                         </p>

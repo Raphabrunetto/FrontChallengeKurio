@@ -120,6 +120,7 @@ export function CheckoutPage() {
       })
 
       queryClient.invalidateQueries({ queryKey: ['nfts'] })
+      queryClient.invalidateQueries({ queryKey: ['nft'] })
       queryClient.invalidateQueries({ queryKey: ['orders'] })
     },
 
@@ -181,7 +182,7 @@ export function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#100d0b] px-6 py-16 text-center text-[#f0e5d5]">
+      <div className="min-h-screen bg-[#100d0b] px-4 py-16 text-center text-[#f0e5d5] sm:px-6">
         Carregando checkout...
       </div>
     )
@@ -189,7 +190,7 @@ export function CheckoutPage() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-[#100d0b] px-6 py-16 text-center text-[#f0e5d5]">
+      <div className="min-h-screen bg-[#100d0b] px-4 py-16 text-center text-[#f0e5d5] sm:px-6">
         Não foi possível carregar seu carrinho.
       </div>
     )
@@ -197,7 +198,7 @@ export function CheckoutPage() {
 
   if (order) {
     return (
-      <div className="min-h-screen bg-[#100d0b] px-6 py-16 text-[#f0e5d5]">
+      <div className="min-h-screen bg-[#100d0b] px-4 py-10 text-[#f0e5d5] sm:px-6 sm:py-16">
         <OrderConfirmation order={order} />
       </div>
     )
@@ -205,7 +206,7 @@ export function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#100d0b] px-6 py-16 text-center text-[#f0e5d5]">
+      <div className="min-h-screen bg-[#100d0b] px-4 py-16 text-center text-[#f0e5d5] sm:px-6">
         <div className="mx-auto max-w-4xl">
           <EmptyCart />
 
@@ -222,8 +223,8 @@ export function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#100d0b] px-6 py-10 text-[#f0e5d5]">
-      <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen min-w-0 bg-[#100d0b] px-4 py-6 text-[#f0e5d5] sm:px-6 sm:py-10">
+      <div className="mx-auto min-w-0 max-w-7xl">
         <button
           type="button"
           onClick={() => navigate({ to: '/cart' })}
@@ -234,14 +235,14 @@ export function CheckoutPage() {
         </button>
 
         <header className="mb-10">
-          <h1 className="text-3xl font-bold">Finalizar compra</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl">Finalizar compra</h1>
           <p className="mt-2 text-sm text-[#b9a895]">
             Complete seus dados para continuar com a compra.
           </p>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px]">
-          <section className="space-y-8">
+        <div className="grid min-w-0 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px]">
+          <section className="min-w-0 space-y-6 sm:space-y-8">
             <CollectorProfileForm
               value={collector}
               onChange={updateCollector}
@@ -259,7 +260,7 @@ export function CheckoutPage() {
             />
           </section>
 
-          <aside className="h-fit space-y-6 rounded-lg border border-[#35251b] bg-[#1c140f] p-6 sm:p-7">
+          <aside className="h-fit min-w-0 space-y-6 rounded-lg border border-[#35251b] bg-[#1c140f] p-4 sm:p-7">
             <CheckoutOrderSummary
               items={items}
               subtotal={subtotal.toFixed(2)}

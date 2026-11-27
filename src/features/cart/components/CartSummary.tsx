@@ -29,7 +29,7 @@ export function CartSummary({
   onRemoveCoupon,
 }: CartSummaryProps) {
   return (
-    <div className="mb-6 rounded-lg bg-[#100d0b] p-4">
+    <div className="mb-6 min-w-0 rounded-lg bg-[#100d0b] p-3 sm:p-4">
       <div className="mb-5">
         <label
           htmlFor="coupon"
@@ -60,7 +60,7 @@ export function CartSummary({
             </button>
           </div>
         ) : (
-          <div className="flex gap-2">
+          <div className="flex min-w-0 gap-2">
             <input
               id="coupon"
               value={couponInput}
@@ -72,14 +72,14 @@ export function CartSummary({
                 }
               }}
               placeholder="Digite seu cupom"
-              className="min-w-0 flex-1 rounded border border-[#493326] bg-[#1c140f] px-3 py-2 text-sm text-[#eee3d2] outline-none placeholder:text-[#806d5c] focus:border-[#d99045]"
+              className="min-w-0 flex-1 rounded border border-[#493326] bg-[#1c140f] px-2 py-2 text-xs text-[#eee3d2] outline-none placeholder:text-[#806d5c] focus:border-[#d99045] sm:px-3 sm:text-sm"
             />
 
             <button
               type="button"
               onClick={onApplyCoupon}
               disabled={!couponInput.trim()}
-              className="rounded bg-[#493326] px-3 py-2 text-xs font-bold text-[#f0e5d5] transition hover:bg-[#65452f] disabled:cursor-not-allowed disabled:opacity-40"
+              className="shrink-0 whitespace-nowrap rounded bg-[#493326] px-2 py-2 text-[10px] font-bold text-[#f0e5d5] transition hover:bg-[#65452f] disabled:cursor-not-allowed disabled:opacity-40 sm:px-3 sm:text-xs"
             >
               Aplicar
             </button>
@@ -97,38 +97,38 @@ export function CartSummary({
       </div>
 
       <div className="space-y-3 border-t border-[#493326] pt-4 text-sm">
-        <div className="flex justify-between gap-4 text-[#b9a895]">
-          <span>Quantidade de itens</span>
-          <span>{totalItems}</span>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-2 text-xs text-[#b9a895] sm:text-sm">
+          <span className="min-w-0">Quantidade de itens</span>
+          <span className="text-right tabular-nums">{totalItems}</span>
         </div>
 
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-2 text-xs text-[#b9a895] sm:text-sm">
           <span>Subtotal</span>
-          <span>{subtotal} ETH</span>
+          <span className="whitespace-nowrap text-right tabular-nums">{subtotal} ETH</span>
         </div>
 
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-2 text-xs text-[#b9a895] sm:text-sm">
           <span>Desconto</span>
-          <span className="text-[#b8d69b]">
+          <span className="whitespace-nowrap text-right tabular-nums text-[#b8d69b]">
             - {discount} ETH
           </span>
         </div>
 
-        <div className="flex justify-between gap-4 text-[#b9a895]">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-2 text-xs text-[#b9a895] sm:text-sm">
           <span>Taxa de rede estimada</span>
-          <span>{networkFee} ETH</span>
+          <span className="whitespace-nowrap text-right tabular-nums">{networkFee} ETH</span>
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-between gap-4 border-t border-[#493326] pt-5">
-        <span className="font-bold">Total estimado</span>
+      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-2 border-t border-[#493326] pt-5">
+        <span className="min-w-0 text-sm font-bold sm:text-base">Total estimado</span>
 
-        <span className="text-xl font-bold text-[#e9a45b]">
+        <span className="whitespace-nowrap text-right text-base font-bold tabular-nums text-[#e9a45b] sm:text-xl">
           {total} ETH
         </span>
       </div>
 
-      <p className="mt-3 text-xs text-[#806d5c]">
+      <p className="mt-3 break-words text-[10px] leading-relaxed text-[#806d5c] sm:text-xs">
         Valores simulados para fins demonstrativos.
       </p>
     </div>

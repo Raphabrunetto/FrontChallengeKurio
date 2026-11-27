@@ -67,7 +67,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-title"
-        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-[#493326] bg-[#1c140f] p-6 text-[#f0e5d5] shadow-2xl sm:p-8"
+        className="relative max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-xl border border-[#493326] bg-[#1c140f] p-5 text-[#f0e5d5] shadow-2xl sm:p-8"
       >
         <button
           type="button"

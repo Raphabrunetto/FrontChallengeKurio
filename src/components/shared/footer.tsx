@@ -69,19 +69,19 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px] px-5 lg:px-10">
 
         {/* Benefícios e newsletter */}
-        <div className="grid gap-8 border-b border-[#493020] py-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid min-w-0 grid-cols-1 gap-8 border-b border-[#493020] py-10 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((benefit) => (
-            <div key={benefit.title} className="flex gap-4">
+            <div key={benefit.title} className="flex min-w-0 gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#d99045] text-lg font-bold text-[#100d0b]">
                 {benefit.letter}
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <h3 className="mb-2 font-semibold">
                   {benefit.title}
                 </h3>
 
-                <p className="text-sm leading-relaxed text-[#b9a184]">
+                <p className="break-words text-sm leading-relaxed text-[#b9a184]">
                   {benefit.description}
                 </p>
               </div>
@@ -119,7 +119,7 @@ export function Footer() {
         </div>
 
         {/* Informações institucionais */}
-        <div className="grid gap-5 bg-[#382211] px-5 py-6 text-sm sm:grid-cols-2 lg:grid-cols-4 lg:items-center">
+        <div className="grid min-w-0 grid-cols-1 gap-5 bg-[#382211] px-5 py-6 text-sm sm:grid-cols-2 lg:grid-cols-4 lg:items-center">
           <strong className="tracking-widest">KURIO</strong>
 
           <p>
@@ -137,7 +137,7 @@ export function Footer() {
         </div>
 
         {/* Links e redes sociais */}
-        <div className="grid gap-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid min-w-0 grid-cols-1 gap-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
           {footerSections.map((section) => (
             <div key={section.title}>
               <h3 className="mb-4 text-base font-bold">
