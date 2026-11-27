@@ -23,13 +23,13 @@ export function CatalogToolbar({
 
   return (
     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      <div className="flex min-w-0 flex-nowrap items-center gap-3 overflow-x-auto sm:gap-5">
+      <div className="flex min-w-0 flex-nowrap items-center gap-2 sm:gap-5">
         {tabs.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => onTabChange(item.id)}
-            className={`shrink-0 whitespace-nowrap border-b-2 pb-2 text-[11px] transition-all duration-200 hover:-translate-y-0.5 sm:text-xs ${
+            className={`shrink-0 whitespace-nowrap border-b-2 pb-2 text-[10px] transition-all duration-200 hover:-translate-y-0.5 sm:text-xs ${
               tab === item.id
                 ? 'border-[#d99045] font-semibold text-[#d99045]'
                 : 'border-transparent text-[#b9a184] hover:text-[#e9a45b]'
