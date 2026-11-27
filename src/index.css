@@ -1,0 +1,65 @@
+
+@import "tailwindcss";
+
+:root {
+  font-family: "Courier New", monospace;
+  color: #f0e5d5;
+  background: #100d0b;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-background: #100d0b;
+  --color-surface: #1d1511;
+  --color-surface-light: #291b15;
+  --color-primary: #d99045;
+  --color-primary-hover: #e9a45b;
+  --color-text: #f0e5d5;
+  --color-muted: #a9957d;
+  --color-border: #38271d;
+
+  --container-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
