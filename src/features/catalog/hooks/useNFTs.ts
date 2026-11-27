@@ -1,5 +1,5 @@
 
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 import { nftService } from '../services/nft.service'
 
@@ -10,5 +10,6 @@ export function useNFTs(params: NFTListParams = {}) {
     queryKey: ['nfts', params],
     queryFn: () => nftService.getAll(params),
     staleTime: 30 * 1000,
+    placeholderData: keepPreviousData,
   })
 }

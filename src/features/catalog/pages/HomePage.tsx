@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { NFTListParams } from '../types/nft'
 import { useNFTs } from '../hooks/useNFTs'
@@ -19,6 +19,7 @@ export function HomePage() {
   const [appliedMaxPrice, setAppliedMaxPrice] = useState<number | undefined>()
   const [priceError, setPriceError] = useState('')
   const [searchInput, setSearchInput] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [sort, setSort] = useState<NFTListParams['sort']>('newest')
   const [currentPage, setCurrentPage] = useState(1)
@@ -27,12 +28,20 @@ export function HomePage() {
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(searchInput.trim())
+    }, 300)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [searchInput])
+
   const { data, isLoading, isError, refetch } = useNFTs({
     page: currentPage,
     limit: 6,
     sort,
     tab: activeTab,
-    ...(searchInput.trim() && { search: searchInput.trim() }),
+    ...(debouncedSearch && { search: debouncedSearch }),
     ...(selectedCategory && { category: selectedCategory }),
     ...(appliedMinPrice !== undefined && { minPrice: appliedMinPrice }),
     ...(appliedMaxPrice !== undefined && { maxPrice: appliedMaxPrice }),
