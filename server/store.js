@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import initialNFTs from './data/nfts.json' with { type: 'json' }
 
 export const sessions = new Map()
+export const users = new Map()
 export const carts = new Map()
 export const orders = new Map()
 export const processedCheckouts = new Map()

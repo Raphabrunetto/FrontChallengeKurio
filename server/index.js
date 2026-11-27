@@ -5,6 +5,7 @@ import { createServer } from 'node:http'
 import { randomUUID } from 'node:crypto'
 
 import nftRoutes from './routes/nfts.js'
+import authRoutes from './routes/auth.js'
 import cartRoutes from './routes/cart.js'
 import { createDevRouter } from './routes/dev.js'
 import { configureSocket } from './socket.js'
@@ -33,6 +34,7 @@ const io = configureSocket(httpServer)
 
 // Rotas da aplicação
 app.use('/api/nfts', nftRoutes)
+app.use('/api/auth', authRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/dev', createDevRouter(io))
 

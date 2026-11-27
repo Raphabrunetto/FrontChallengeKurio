@@ -8,23 +8,21 @@ import { QueryProvider } from './app/providers/QueryProvider'
 
 import './index.css'
 
-async function enableMocking() {
-  const { worker } = await import('./mocks/browser')
-  await worker.start()
+async function bootstrap() {
+  if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === 'true') {
+    const { worker } = await import('./mocks/browser')
+    await worker.start()
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <QueryProvider>
+        <RouterProvider router={router} />
+      </QueryProvider>
+    </React.StrictMode>,
+  )
 }
 
-enableMocking()
-  .then(() => {
-    ReactDOM.createRoot(
-      document.getElementById('root')!,
-    ).render(
-      <React.StrictMode>
-        <QueryProvider>
-          <RouterProvider router={router} />
-        </QueryProvider>
-      </React.StrictMode>,
-    )
-  })
-  .catch((error) => {
-    console.error('Falha ao inicializar a aplicação:', error)
-  })
+void bootstrap().catch((error) => {
+  console.error('Falha ao inicializar a aplicação:', error)
+})

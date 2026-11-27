@@ -10,6 +10,8 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 
 > Se os domínios de deploy forem alterados, atualize esta seção e as variáveis de ambiente.
 
+Cadastro e autenticação usam a API Express. O MSW só é iniciado localmente quando `VITE_ENABLE_MOCKS=true`; esse modo serve para testar os handlers simulados.
+
 ## Tecnologias
 
 **Front-end**
@@ -19,7 +21,7 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 - TanStack Router e TanStack Query
 - Axios
 - Socket.IO Client
-- MSW para funcionalidades que ainda permanecem simuladas
+- MSW para simular autenticação localmente, quando habilitado
 
 **Back-end**
 - Node.js e Express
@@ -40,8 +42,9 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 - API REST para catálogo e carrinho.
 - Comunicação em tempo real para atualização de NFTs.
 - Interface responsiva.
+- Cadastro, login, consulta de sessão e logout pela API.
 
-**Nota:** partes do projeto ainda utilizam mocks no front-end. Autenticação, carteiras e checkout devem ser considerados demonstrativos enquanto não estiverem integralmente conectados e persistidos no back-end.
+**Nota:** carteiras e checkout ainda são demonstrativos e não estão integralmente conectados e persistidos no back-end.
 
 ## Estrutura
 
@@ -51,6 +54,7 @@ Marketplace demonstrativo de NFTs desenvolvido com React, TypeScript e Vite, com
 │   ├── data/
 │   │   └── nfts.json
 │   ├── routes/
+│   │   ├── auth.js
 │   │   ├── cart.js
 │   │   ├── dev.js
 │   │   ├── nfts.js
@@ -101,6 +105,8 @@ VITE_REALTIME_URL=http://localhost:3001
 
 As variáveis `VITE_*` são incluídas no bundle do navegador. Não coloque senhas, tokens privados ou segredos nelas.
 
+O backend local é usado por padrão durante o desenvolvimento. Para simular os endpoints de autenticação, adicione `VITE_ENABLE_MOCKS=true` ao `.env`.
+
 ### 4. Iniciar o back-end
 
 Em um terminal:
@@ -134,6 +140,7 @@ Mantenha os dois terminais ativos durante o desenvolvimento.
 | --- | --- |
 | `npm run dev` | Inicia o Vite |
 | `npm run server` | Inicia Express e Socket.IO |
+| `npm run dev:all` | Inicia front-end e backend em paralelo |
 | `npm run build` | Verifica os tipos e gera o build |
 | `npm run typecheck` | Executa a verificação TypeScript |
 | `npm run lint` | Executa o Oxlint |
@@ -177,6 +184,17 @@ Depois de salvar as variáveis, faça um novo deploy para que o Vite incorpore o
 
 ## Endpoints da API
 
+### Autenticação
+
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `POST` | `/api/auth/register` | Cria uma conta e inicia a sessão |
+| `POST` | `/api/auth/login` | Valida as credenciais e inicia a sessão |
+| `GET` | `/api/auth/me` | Retorna a conta da sessão autenticada |
+| `POST` | `/api/auth/logout` | Encerra a sessão autenticada |
+
+O frontend guarda o token de sessão no navegador e o envia como `Authorization: Bearer <token>` nas chamadas à API. Senhas são armazenadas como hash no backend.
+
 ### NFTs
 
 | Método | Rota | Descrição |
@@ -205,8 +223,9 @@ O servidor também disponibiliza eventos Socket.IO para sincronização em tempo
 ## Limitações conhecidas
 
 - **Persistência:** o back-end utiliza estruturas em memória (`Map`). Sessões, carrinhos e alterações de estado podem ser perdidos quando o serviço reiniciar ou entrar em suspensão. Não há banco de dados persistente nesta versão.
+- **Autenticação:** usuários e sessões também ficam em memória; contas podem ser perdidas quando o processo do backend reiniciar.
 - **Pagamentos:** não existe integração com gateway de pagamento real. Os fluxos de pagamento são simulações.
-- **Mocks:** funcionalidades ainda não migradas para a API podem continuar utilizando MSW.
+- **Mocks:** MSW só é iniciado em desenvolvimento quando `VITE_ENABLE_MOCKS=true`.
 - **Render:** dependendo do plano, o serviço pode suspender após inatividade; a primeira requisição pode demorar alguns instantes.
 
 ## Validação antes da entrega
