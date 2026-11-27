@@ -12,6 +12,7 @@ export interface NFT {
   totalEditions: number
   createdAt: string
   featured: boolean
+  version?: number
 }
 
 export interface NFTListResponse {
